@@ -10,12 +10,15 @@ const current0El = document.getElementById("current--0")
 const current1El = document.getElementById("current--1")
 
 score0El.textContent = 0
-score1El.textContent = 1
+score1El.textContent = 0
 diceEl.classList.add("hidden")
 
 let currentScore = 0
+let activePlayer = 0
+let activeCurrentEl = current0El
 
 btnRoll.addEventListener("click", () => {
+  activeCurrentEl = activePlayer === 0 ? current0El : current1El
   const dice = rollDice()
   console.log(dice)
   diceEl.classList.remove("hidden")
@@ -23,15 +26,18 @@ btnRoll.addEventListener("click", () => {
 
   if (dice !== 1) {
     currentScore += dice
-    current0El.textContent = currentScore
+    activeCurrentEl.textContent = currentScore
   } else {
     currentScore = 0
-    current0El.textContent = currentScore
+    activeCurrentEl.textContent = currentScore
+    activePlayer = activePlayer === 0 ? 1 : 0
   }
 })
 
 function rollDice() {
   return Math.floor(Math.random() * 6) + 1
 }
+
+function holdTurn() {}
 
 rollDice()
