@@ -77,6 +77,7 @@ console.log(x === window.x)
 console.log(y === window.y)
 console.log(z === window.z)
 
+// „This“ always needs an owner! That's why we use it for object methods
 console.log(this) // window object
 
 const arrowFunction = () => {
@@ -94,12 +95,12 @@ const joe = {
   year: 1995,
   calcAge: function () {
     const a = 1
-    console.log(this) // object that's calling the function => 'joe' object
+    console.log(this) // object that's calling/owning the function => 'joe' object
     return 2037 - this.year
   },
   arrow: () => {
     const b = 0
-    console.log(this) // lexical this (this of surrounding function = window, when called toplevel)
+    console.log(this) // lexical this (this of calling scope = window, when called toplevel)
   },
 }
 
@@ -110,5 +111,37 @@ const jim = {
   },
 }
 console.log(joe.calcAge())
-joe.arrow()
+joe.arrow() // window
 jim.callJoe() // This still = window (called on top level, even though through 2 objects)
+
+function regularFunc() {
+  console.log(this) // „undefined“ in strict mode
+}
+regularFunc()
+
+const arrowFun = () => {
+  console.log(this) // Lexical this of parent scope (here window)
+}
+arrowFun()
+
+const nestedFuncObj = {
+  year: 1993,
+  firstName: "Jeff",
+  calcAge: function () {
+    console.log(2023 - this.year)
+    // Solution (pre ES6) to preserve „this“ via self:
+    /*const self = this
+     const isMillenial = function () {
+      console.log(self)
+      console.log(self.year >= 1995)
+    } */
+    // Solution 2 (modern):
+    const isMillenial = () => {
+      // arrow funcs get „this“ from parent scope
+      console.log(this)
+      console.log(this.year >= 1995)
+    }
+    isMillenial()
+  },
+}
+nestedFuncObj.calcAge()
