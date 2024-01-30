@@ -277,3 +277,24 @@ function printBookInfo({ title, author, year = "year unknown" }) {
 }
 printBookInfo({ title: "Algorithms", author: "Robert Sedgewick", year: "2011" })
 printBookInfo({ title: "Algorithms", author: "Robert Sedgewick" })
+
+const bookAuthors = [...books[0].author, ...books[1].author]
+// console.log(bookAuthors)
+
+function spellWord(word) {
+  console.log(...word)
+}
+
+spellWord("JavaScript")
+
+const [mainKeyword, ...rest] = books[0].keywords
+console.log(mainKeyword)
+console.log(rest)
+const { publisher: bookPublisher, ...restProps } = books[1]
+console.log(bookPublisher)
+console.log(restProps)
+
+function printBookAuthorsCount(title, ...authors) {
+  console.log(`The book "${title}" has ${authors.length} authors`)
+}
+printBookAuthorsCount("Algorithms", "Robert Sedgewick", "Kevin Wayne")
