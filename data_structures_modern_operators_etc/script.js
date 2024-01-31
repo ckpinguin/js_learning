@@ -244,6 +244,8 @@ const books = [
   },
 ]
 
+// Destructuring
+/////////////////
 const [firstBook, secondBook] = books
 const [, , thirdBook] = books
 
@@ -272,12 +274,16 @@ const {
   },
 } = books[0]
 //console.log(bookRating)
+// Default values
+/////////////////
 function printBookInfo({ title, author, year = "year unknown" }) {
   console.log(`${title} by ${author}, ${year}`)
 }
 printBookInfo({ title: "Algorithms", author: "Robert Sedgewick", year: "2011" })
 printBookInfo({ title: "Algorithms", author: "Robert Sedgewick" })
 
+// Spread operator
+////////////////////
 const bookAuthors = [...books[0].author, ...books[1].author]
 // console.log(bookAuthors)
 
@@ -287,6 +293,8 @@ function spellWord(word) {
 
 spellWord("JavaScript")
 
+// Rest params operator
+///////////////////////
 const [mainKeyword, ...rest] = books[0].keywords
 console.log(mainKeyword)
 console.log(rest)
@@ -298,3 +306,29 @@ function printBookAuthorsCount(title, ...authors) {
   console.log(`The book "${title}" has ${authors.length} authors`)
 }
 printBookAuthorsCount("Algorithms", "Robert Sedgewick", "Kevin Wayne")
+
+// Shortcircuiting
+//////////////////
+console.log(3 || "hello")
+console.log("" || "Jim")
+console.log(true || 0)
+console.log(undefined || null) // both are falsy values
+console.log(undefined || 0 || "" || null || "hello" || 23 || null)
+console.log(0 && "Jim")
+console.log(7 && "Jim")
+
+function hasExamplesInJava(book) {
+  return book.programmingLanguage === "Java" || "no data available"
+}
+console.log(hasExamplesInJava(books[0]))
+
+for (let book of books) {
+  book.onlineContent && console.log(`${book.title} provides online content`)
+}
+
+// Nullish coalescing operator: ??
+//////////////////////////////////
+for (let book of books) {
+  book.onlineContent ??
+    console.log(`${book.title} provides no data about its online content`)
+}
