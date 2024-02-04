@@ -328,6 +328,7 @@ for (let book of books) {
 
 // Nullish coalescing operator: ??
 //////////////////////////////////
+// (Nullish values are Null and undefined)
 for (let book of books) {
   book.onlineContent ??
     console.log(`${book.title} provides no data about its online content`)
@@ -424,3 +425,31 @@ printGoals(...game.scored)
 console.log(
   `${(team1 < team2 && game.team1) || game.team2} is more likely to win.`
 )
+
+// Optional chaining
+//////////////////////////////////
+function getFirstKeyword(book) {
+  return book?.keywords[0]
+}
+console.log(getFirstKeyword(books[8]))
+
+// Object looping
+////////////////////////////////////
+const entries = []
+for (const key of Object.keys(books[0].thirdParty.goodreads)) {
+  entries.push([key])
+}
+console.log(entries)
+
+// console.log(Object.keys(books[0]))
+// console.log(Object.values(books[0]))
+// console.log(Object.entries(books[0]))
+for (const [index, value] of Object.values(
+  books[0].thirdParty.goodreads
+).entries()) {
+  entries[index].push(value)
+}
+console.log(entries)
+
+const entries2 = Object.entries(books[0].thirdParty.goodreads)
+console.log(entries2)
