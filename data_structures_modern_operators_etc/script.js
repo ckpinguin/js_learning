@@ -490,11 +490,9 @@ avg /= odds.length
 console.log(avg)
 
 // 3.
-for (const odd of Object.entries(game.odds)) {
-  if (game[odd[0]] == "x") {
-    console.log(`Odd of draw:${odd[1]}`)
-  }
-  console.log(`Odd of victory ${game[odd[0]]}: ${odd[1]}`)
+for (const [team, odd] of Object.entries(game.odds)) {
+  const teamStr = team === "x" ? "draw" : `victory ${game[team]}`
+  console.log(`Odd of ${teamStr}: ${odd}`)
 }
 
 // 4.
