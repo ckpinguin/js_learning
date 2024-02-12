@@ -839,3 +839,149 @@ button.addEventListener("click", () => {
     console.log(output2)
   }
 })
+
+// Some extra string exercises
+///////////////////////////////////////
+// String Methods Practice
+
+const flights =
+  "_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30"
+
+// 🔴 Delayed Departure from FAO to TXL (11h25)
+//              Arrival from BRU to FAO (11h45)
+//   🔴 Delayed Arrival from HEL to FAO (12h05)
+//            Departure from FAO to LIS (12h30)
+const getCode = (str) => str.slice(0, 3).toUpperCase()
+
+for (const flight of flights.split("+")) {
+  const [type, from, to, time] = flight.split(";")
+  const output = `${type.startsWith("_Delayed") ? "🔴" : ""}${type.replaceAll(
+    "_",
+    " "
+  )} from ${getCode(from)} to ${getCode(to)}, (${time.replaceAll(
+    ":",
+    "h"
+  )})`.padStart(45)
+  console.log(output)
+}
+
+// Assignments for Sets
+const allKeywords = []
+for (const book of books) {
+  allKeywords.push(...book.keywords)
+}
+console.log(allKeywords)
+const uniqueKeywords = new Set(allKeywords)
+uniqueKeywords.add("coding")
+uniqueKeywords.add("science")
+uniqueKeywords.delete("business")
+console.log(uniqueKeywords)
+const uniqueKeywordsArr = [...uniqueKeywords]
+console.log(uniqueKeywordsArr)
+uniqueKeywords.clear()
+
+// Assignments for Maps
+const bookMap = new Map([
+  ["title", "Clean Code"],
+  ["author", "Robert C. Martin"],
+])
+bookMap.set("pages", 464)
+console.log(bookMap)
+console.log(`${bookMap.get("title")} by ${bookMap.get("author")}`)
+console.log(bookMap.size)
+if (bookMap.has("author")) console.log("The author of the book is known")
+
+const firstBookMap = Object.entries(books[0])
+console.log(firstBookMap)
+for (const [key, value] of firstBookMap) {
+  if (typeof value === "number") console.log(key)
+}
+
+// Assignments for strings
+console.log(
+  books[0].ISBN["6"],
+  books[0].ISBN["4"],
+  books[0].ISBN["9"],
+  books[0].ISBN[8]
+)
+const quote =
+  "A computer once beat me at chess, but it was no match for me at kick boxing"
+console.log(quote.indexOf("chess"))
+console.log(quote.slice(quote.lastIndexOf(" ") + 1))
+
+function isContributor(name) {
+  return name.includes("(Contributor)")
+}
+console.log(isContributor("Julie Sussman (Contributor)"))
+console.log(isContributor("Robert Sedgewick"))
+
+function normalizeAuthorName(author) {
+  author = author.trim()
+  const firstName = author.slice(0, author.indexOf(" "))
+  const lastName = author.slice(
+    author.indexOf(" ") + 1,
+    author.lastIndexOf(" ") + 1
+  )
+  const capitalizedFirstName =
+    firstName[0].toUpperCase() + firstName.slice(1).toLowerCase()
+  const capitalizedLastName =
+    lastName[0].toUpperCase() + lastName.slice(1).toLowerCase()
+  return capitalizedFirstName + " " + capitalizedLastName
+}
+console.log(normalizeAuthorName("  JuliE sussMan (Contributor)"))
+
+const newTitle = books[1].title.replace("Programs", "Software")
+books[1].newBookTitle = newTitle
+console.log(books[1])
+
+function logBookTheme(title) {
+  if (title.startsWith("computer")) {
+    console.log("This book is about computers")
+  } else if (title.includes("algorithms") && title.includes("structures")) {
+    console.log("This book is about algorithms and data structures")
+  } else if (
+    (title.endsWith("system") || title.endsWith("systems")) &&
+    !title.includes("operating")
+  ) {
+    console.log(
+      "This book is about some systems, but definitely not about operating systems"
+    )
+  }
+}
+
+function logBookCategories(categories) {
+  const separatedCategories = categories.split(";")
+  for (const category of separatedCategories) {
+    console.log(category)
+  }
+}
+
+const bookCategories =
+  "science;computing;computer science;algorithms;business;operating systems;networking;electronics"
+logBookCategories(bookCategories)
+
+function getKeywordsAsString(books) {
+  const keywords = []
+  for (const book of books) {
+    keywords.push(...book.keywords)
+  }
+  const uniqueKeywords = [...new Set(keywords)]
+  return uniqueKeywords.join(";")
+}
+
+console.log(getKeywordsAsString(books))
+
+function logBookChapters(chapters) {
+  for (const [chapter, page] of chapters) {
+    console.log(`${chapter.padEnd(20, "_")} ${page}`)
+  }
+}
+
+const bookChapters = [
+  ["The Basics", 14],
+  ["Sorting", 254],
+  ["Searching", 372],
+  ["Graphs", 526],
+  ["Strings", 706],
+]
+logBookChapters(bookChapters)
