@@ -29,9 +29,9 @@ const checkIn = function (flightNum, passenger) {
   passenger.name = "Mr. " + passenger.name
 
   if (passenger.passport === 24739479284) {
-    alert("Checked in")
+    console.log("Checked in")
   } else {
-    alert("Wrong passport!")
+    console.log("Wrong passport!")
   }
 }
 checkIn(flight, jonas)
