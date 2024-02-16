@@ -207,3 +207,29 @@ poll.displayResults.call({ answers: [5, 2, 3] }, "string")
 poll.displayResults.call({ answers: [5, 2, 3] }, "array")
 poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] }, "string")
 poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] }, "array")
+
+// IIFE
+const runOnce = function () {
+  console.log("This will never run again")
+}
+runOnce()
+;(function () {
+  console.log("This will ALSO never run again")
+})()
+;(() => console.log("This will ALSO never run again"))()
+
+// Closures
+function secureBooking() {
+  let passengerCount = 0
+  // This closes over the passengerCount variable:
+  return function () {
+    passengerCount++
+    console.log(`${passengerCount} passengers`)
+  }
+}
+const booker = secureBooking()
+booker()
+booker()
+booker()
+
+console.dir(booker)
