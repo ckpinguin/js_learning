@@ -36,16 +36,16 @@ console.log(calcAge(1979))
 
 // Hoisting practice:
 console.log(me) // Hoisted, so OK
-// console.log(job) // Still in TDZ
-// console.log(year) // Still in TDZ
+// console.log(job) // Nope, still in TDZ
+// console.log(year) // Nope, still in TDZ
 var me = "Chris"
 let job = "Learner"
 const year = 1975
 
 // Function hoisting
 console.log(addDecl(2, 3)) // OK
-// console.log(addExpr(2, 3)) // NOK
-// console.log(addArrow(2, 3)) // NOK
+// console.log(addExpr(2, 3)) // NOK, because it's a variable with a function
+// console.log(addArrow(2, 3)) // NOK, same
 
 function addDecl(a, b) {
   return a + b
@@ -69,7 +69,7 @@ function deleteShoppingCart() {
   console.log("All products deleted!")
 }
 
-var x = 1
+var x = 1 // in global (window object) context
 let y = 2
 const z = 3
 
@@ -81,7 +81,7 @@ console.log(z === window.z)
 console.log(this) // window object
 
 const arrowFunction = () => {
-  console.log(this) // calling object = window
+  console.log(this) // calling object = window, only works in function expressions
 }
 arrowFunction()
 
@@ -112,7 +112,7 @@ const jim = {
 }
 console.log(joe.calcAge())
 joe.arrow() // window
-jim.callJoe() // This still = window (called on top level, even though through 2 objects)
+jim.callJoe() // This still is window (called on top level, even though through 2 objects)
 
 function regularFunc() {
   console.log(this) // „undefined“ in strict mode
@@ -137,7 +137,7 @@ const nestedFuncObj = {
     } */
     // Solution 2 (modern):
     const isMillenial = () => {
-      // arrow funcs get „this“ from parent scope
+      // arrow funcs get „this“ automatically from parent scope
       console.log(this)
       console.log(this.year >= 1995)
     }
@@ -145,3 +145,10 @@ const nestedFuncObj = {
   },
 }
 nestedFuncObj.calcAge()
+
+let xyz = 1
+function f() {
+  //console.log(xyz) // Nope, no access to outside scope's xyz because declared in this scope with same name (yet that is still in TDZ)
+  let xyz = 2
+}
+f()
