@@ -113,3 +113,19 @@ console.log(arr3.at(-1))
 console.log("Chris".at(-1))
 
 // LOOPING ARRAYS: forEach
+for (const movement of movements) {
+  if (movement > 0) {
+    console.log(`You deposited ${movement}`)
+  } else {
+    console.log(`You withdrew ${Math.abs(movement)}`)
+  }
+}
+
+// forEach with index
+movements.forEach(function (mov, i, arr) {
+  if (mov > 0) {
+    console.log(`Movement ${i + 1}: You deposited ${mov}`)
+  } else {
+    console.log(`Movement ${i + 1}: You withdrew ${Math.abs(mov)}`)
+  }
+})
