@@ -82,6 +82,18 @@ const displayMovements = function (movements) {
 }
 displayMovements(account1.movements)
 
+const createUsernames = function (accounts) {
+  accounts.forEach((account) => {
+    account.username = account.owner
+      .toLowerCase()
+      .split(" ")
+      .map((name) => name[0])
+      .join("")
+  })
+}
+createUsernames(accounts)
+console.log(accounts)
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -192,7 +204,7 @@ GOOD LUCK 😀
 */
 //const j_dogs = [3, 5, 2, 12, 7]
 //const k_dogs = [4, 1, 15, 8, 3]
-const j_dogs = [9, 16, 6, 8, 3]
+/* const j_dogs = [9, 16, 6, 8, 3]
 const k_dogs = [10, 5, 6, 1, 4]
 j_dogs.splice(-2)
 j_dogs.splice(0, 1)
@@ -210,4 +222,20 @@ function checkDogs(dogs) {
   })
 }
 
-checkDogs(all_dogs)
+checkDogs(all_dogs) */
+
+/* const eurToUsd = 1.1
+
+const movementsUSD = movements.map((mov) => mov * eurToUsd)
+
+console.log(movements)
+console.log(movementsUSD)
+
+const movementsDescriptions = movements.map(
+  (mov, i) =>
+    `Movement ${i + 1}: You ${mov > 0 ? "deposited" : "withdrew"} ${Math.abs(
+      mov
+    )}`
+)
+
+console.log(movementsDescriptions) */
