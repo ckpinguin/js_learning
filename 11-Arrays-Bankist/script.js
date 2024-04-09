@@ -239,3 +239,7 @@ const movementsDescriptions = movements.map(
 )
 
 console.log(movementsDescriptions) */
+
+const deposits = movements.filter((mov) => mov > 0)
+
+console.log(deposits)
