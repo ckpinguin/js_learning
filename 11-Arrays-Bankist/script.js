@@ -98,6 +98,14 @@ const calcDisplaySummary = function (movements) {
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov, 0)
   labelSumOut.textContent = `${Math.abs(outgoing)}€`
+
+  const interest = movements
+    .filter((mov) => mov > 0)
+    .map((mov) => (mov * 1.2) / 100)
+    .filter((interest) => interest >= 1)
+    .reduce((acc, interest) => acc + interest, 0)
+
+  labelSumInterest.textContent = `${interest}€`
 }
 calcDisplaySummary(account1.movements)
 
@@ -312,10 +320,10 @@ const calcAverageHumanAge = function (ages) {
 
 console.log(calcAverageHumanAge(ages1))
 console.log(calcAverageHumanAge(ages2)) */
-const eurToUsd = 1.1
+/* const eurToUsd = 1.1
 const totalDepositsUSD = movements
   .filter((mov) => mov > 0)
   .map((mov) => mov * eurToUsd)
   .reduce((acc, mov) => acc + mov, 0)
 
-console.log(totalDepositsUSD)
+console.log(totalDepositsUSD) */
