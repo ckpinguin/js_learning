@@ -88,6 +88,19 @@ const calcDisplayBalance = function (movements) {
 }
 calcDisplayBalance(account1.movements)
 
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0)
+  labelSumIn.textContent = `${incomes}€`
+
+  const outgoing = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0)
+  labelSumOut.textContent = `${Math.abs(outgoing)}€`
+}
+calcDisplaySummary(account1.movements)
+
 const createUsernames = function (accounts) {
   accounts.forEach((account) => {
     account.username = account.owner
@@ -299,3 +312,10 @@ const calcAverageHumanAge = function (ages) {
 
 console.log(calcAverageHumanAge(ages1))
 console.log(calcAverageHumanAge(ages2)) */
+const eurToUsd = 1.1
+const totalDepositsUSD = movements
+  .filter((mov) => mov > 0)
+  .map((mov) => mov * eurToUsd)
+  .reduce((acc, mov) => acc + mov, 0)
+
+console.log(totalDepositsUSD)
