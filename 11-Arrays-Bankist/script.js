@@ -167,10 +167,13 @@ btnTransfer.addEventListener("click", (e) => {
 
 btnClose.addEventListener("click", function (e) {
   e.preventDefault()
+
   if (inputCloseUsername.value === currentAccount.username) {
     const index = accounts.findIndex(
       (acc) => acc.username === currentAccount.username
     )
+
+    inputCloseUsername.value = inputClosePin.value = ""
     accounts.splice(index, 1)
     containerApp.style.opacity = 0
     labelWelcome.textContent = "Sorry to lose you as a customer :("
