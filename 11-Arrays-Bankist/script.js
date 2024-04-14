@@ -80,34 +80,31 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML("afterbegin", html)
   })
 }
-displayMovements(account1.movements)
 
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0)
   labelBalance.textContent = `${balance} EUR`
 }
-calcDisplayBalance(account1.movements)
 
-const calcDisplaySummary = function (movements) {
-  const incomes = movements
+const calcDisplaySummary = function (account) {
+  const incomes = account.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov, 0)
   labelSumIn.textContent = `${incomes}€`
 
-  const outgoing = movements
+  const outgoing = account.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov, 0)
   labelSumOut.textContent = `${Math.abs(outgoing)}€`
 
-  const interest = movements
+  const interest = account.movements
     .filter((mov) => mov > 0)
-    .map((mov) => (mov * 1.2) / 100)
+    .map((mov) => (mov * account.interestRate) / 100)
     .filter((interest) => interest >= 1)
     .reduce((acc, interest) => acc + interest, 0)
 
   labelSumInterest.textContent = `${interest}€`
 }
-calcDisplaySummary(account1.movements)
 
 const createUsernames = function (accounts) {
   accounts.forEach((account) => {
@@ -119,6 +116,38 @@ const createUsernames = function (accounts) {
   })
 }
 createUsernames(accounts)
+// console.log(accounts)
+
+let currentAccount
+// Event handler
+btnLogin.addEventListener("click", (e) => {
+  e.preventDefault()
+
+  currentAccount = accounts.find(
+    (acc) => acc.username === inputLoginUsername.value
+  )
+  console.log(currentAccount)
+
+  if (currentAccount?.pin === Number(inputLoginPin.value))
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(" ")[0]
+    }`
+  containerApp.style.opacity = 100
+
+  displayMovements(currentAccount.movements)
+  calcDisplayBalance(currentAccount.movements)
+  calcDisplaySummary(currentAccount)
+  inputLoginUsername.value = inputLoginPin.value = ""
+  inputLoginPin.blur()
+})
+
+btnTransfer.addEventListener("click", (e) => {
+  e.preventDefault()
+  const amount = Number(inputTransferAmount.value)
+  const receiverAcc = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
+  )
+})
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
