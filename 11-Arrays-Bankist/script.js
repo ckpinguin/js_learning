@@ -138,7 +138,7 @@ btnLogin.addEventListener("click", (e) => {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
     }`
-  containerApp.style.opacity = 100
+  containerApp.style.opacity = 1
 
   inputLoginUsername.value = inputLoginPin.value = ""
   inputLoginPin.blur()
@@ -162,6 +162,18 @@ btnTransfer.addEventListener("click", (e) => {
     currentAccount.movements.push(-amount)
     receiverAcc.movements.push(amount)
     updateUI(currentAccount)
+  }
+})
+
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault()
+  if (inputCloseUsername.value === currentAccount.username) {
+    const index = accounts.findIndex(
+      (acc) => acc.username === currentAccount.username
+    )
+    accounts.splice(index, 1)
+    containerApp.style.opacity = 0
+    labelWelcome.textContent = "Sorry to lose you as a customer :("
   }
 })
 
