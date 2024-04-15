@@ -455,3 +455,19 @@ console.log(movements.sort((a, b) => a - b))
 console.log(movements.sort((a, b) => (a > b ? -1 : 1)))
 // Shorter form:
 console.log(movements.sort((a, b) => b - a))
+
+const y = Array.from({ length: 7 }, () => 1)
+console.log(y)
+const z = Array.from({ length: 7 }, (_, i) => i + 1)
+console.log(z)
+const r = Array.from({ length: 100 }, () => Math.round(Math.random() * 100))
+console.log(r)
+
+labelBalance.addEventListener("click", () => {
+  const movementsUI = Array.from(
+    document.querySelectorAll(".movements__value"),
+    (el) => Number(el.textContent.replace("€", ""))
+  )
+
+  console.log(movementsUI)
+})
