@@ -61,11 +61,13 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount")
 const inputCloseUsername = document.querySelector(".form__input--user")
 const inputClosePin = document.querySelector(".form__input--pin")
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   // Remove existing static movements in index.html first
   containerMovements.innerHTML = ""
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? "deposit" : "withdrawal"
 
     const html = `
@@ -178,6 +180,24 @@ btnClose.addEventListener("click", function (e) {
     containerApp.style.opacity = 0
     labelWelcome.textContent = "Sorry to lose you as a customer :("
   }
+})
+
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault()
+  const amount = Number(inputLoanAmount.value)
+
+  if (amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1))
+    currentAccount.movements.push(amount)
+
+  updateUI(currentAccount)
+  inputLoanAmount.value = ""
+})
+
+let sorted = false
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault()
+  displayMovements(currentAccount.movements, !sorted)
+  sorted = !sorted
 })
 
 /////////////////////////////////////////////////
@@ -400,7 +420,7 @@ TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
 GOOD LUCK 😀
 */
 
-const ages1 = [5, 2, 4, 1, 15, 8, 3]
+/* const ages1 = [5, 2, 4, 1, 15, 8, 3]
 const ages2 = [16, 6, 10, 5, 6, 1, 4]
 const calcAverageHumanAge = function (ages) {
   return ages
@@ -410,4 +430,28 @@ const calcAverageHumanAge = function (ages) {
 }
 
 console.log(calcAverageHumanAge(ages1))
-console.log(calcAverageHumanAge(ages2))
+console.log(calcAverageHumanAge(ages2)) */
+
+/* const overallBalance = accounts
+  .map((acc) => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0)
+console.log(overallBalance)
+
+const overallBalanceSimplfied = accounts
+  .flatMap((acc) => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0)
+console.log(overallBalanceSimplfied) */
+
+// return < 0 A, B keep order
+// return > 0 B, A switch order
+
+// Ascending
+console.log(movements.sort((a, b) => (a > b ? 1 : -1)))
+// Shorter form:
+console.log(movements.sort((a, b) => a - b))
+
+// Descending
+console.log(movements.sort((a, b) => (a > b ? -1 : 1)))
+// Shorter form:
+console.log(movements.sort((a, b) => b - a))
