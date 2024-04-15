@@ -553,60 +553,68 @@ const dogs = [
   { weight: 32, curFood: 340, owners: ["Michael"] },
 ]
 // 1
-dogs.forEach((dog) => (dog.recommendedFood = dog.weight ** 0.75 * 28))
+dogs.forEach(
+  (dog) => (dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28))
+)
+console.log(dogs)
 
 // 2
-const sarahsDog = dogs.filter((dog) => dog.owners.includes("Sarah"))
+const sarahsDog = dogs.find((dog) => dog.owners.includes("Sarah"))
 console.log(
-  sarahsDog.curFood > sarahsDog.recommendedFood
-    ? "Eating too much"
-    : "Eating too few"
+  `Sarah's dog is eating too ${
+    sarahsDog.curFood > sarahsDog.recommendedFood ? "much" : "little"
+  }.`
 )
 
 // 3
-const ownersEatTooMuch = dogs.filter((dog) => dog.curFood > dog.recommendedFood)
-const ownersEatTooLittle = dogs.filter(
-  (dog) => dog.curFood < dog.recommendedFood
-)
+const ownersEatTooMuch = dogs
+  .filter((dog) => dog.curFood > dog.recommendedFood)
+  .flatMap((dog) => dog.owners)
+const ownersEatTooLittle = dogs
+  .filter((dog) => dog.curFood < dog.recommendedFood)
+  .flatMap((dog) => dog.owners)
 
 console.log(ownersEatTooMuch)
 console.log(ownersEatTooLittle)
 
 // 4
-console.log(
-  ownersEatTooMuch
-    .map((dog) => dog.owners.flat().join(" and "))
-    .flat()
-    .join(" and ") + "'s dogs are eating too much."
-)
-console.log(
-  ownersEatTooLittle
-    .map((dog) => dog.owners.flat().join(" and "))
-    .flat()
-    .join(" and ") + "'s dogs are eating too little."
-)
+console.log(ownersEatTooMuch.join(" and ") + "'s dogs are eating too much.")
+console.log(ownersEatTooLittle.join(" and ") + "'s dogs are eating too little.")
 
 // 5
 console.log(dogs.some((dog) => dog.curFood === dog.recommendedFood))
 
 // 6
-console.log(
-  dogs.some(
-    (dog) =>
-      dog.curFood > dog.recommendedFood * 0.9 &&
-      dog.curFood < dog.recommendedFood * 1.1
-  )
-)
+const checkEatingOkay = (dog) =>
+  dog.curFood > dog.recommendedFood * 0.9 &&
+  dog.curFood < dog.recommendedFood * 1.1
+
+console.log(dogs.some(checkEatingOkay))
 
 // 7
-const dogsEatOK = dogs.filter(
-  (dog) =>
-    dog.curFood > dog.recommendedFood * 0.9 &&
-    dog.curFood < dog.recommendedFood * 1.1
-)
+const dogsEatOK = dogs.filter(checkEatingOkay)
 console.log(dogsEatOK)
 
 // 8
 const sortedDogs = dogs
-sortedDogs.sort((a, b) => a.recommendedFood - b.recommendedFood)
+  .slice()
+  .sort((a, b) => a.recommendedFood - b.recommendedFood)
 console.log(sortedDogs)
+
+// Bonus challenge
+const countSameLetters = function (str) {
+  return str
+    .toLowerCase()
+    .split("")
+    .reduce((obj, el) => {
+      if (!obj[el]) obj[el] = 1
+      else obj[el] += 1
+      return obj
+    }, {})
+}
+
+console.log(countSameLetters("aaa BBbb c"))
+//{a: 3, " ": 2, b: 4, c: 1}
+
+console.log(countSameLetters(""))
+//{}
