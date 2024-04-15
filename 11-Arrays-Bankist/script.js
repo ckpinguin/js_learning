@@ -571,3 +571,42 @@ const ownersEatTooLittle = dogs.filter(
 
 console.log(ownersEatTooMuch)
 console.log(ownersEatTooLittle)
+
+// 4
+console.log(
+  ownersEatTooMuch
+    .map((dog) => dog.owners.flat().join(" and "))
+    .flat()
+    .join(" and ") + "'s dogs are eating too much."
+)
+console.log(
+  ownersEatTooLittle
+    .map((dog) => dog.owners.flat().join(" and "))
+    .flat()
+    .join(" and ") + "'s dogs are eating too little."
+)
+
+// 5
+console.log(dogs.some((dog) => dog.curFood === dog.recommendedFood))
+
+// 6
+console.log(
+  dogs.some(
+    (dog) =>
+      dog.curFood > dog.recommendedFood * 0.9 &&
+      dog.curFood < dog.recommendedFood * 1.1
+  )
+)
+
+// 7
+const dogsEatOK = dogs.filter(
+  (dog) =>
+    dog.curFood > dog.recommendedFood * 0.9 &&
+    dog.curFood < dog.recommendedFood * 1.1
+)
+console.log(dogsEatOK)
+
+// 8
+const sortedDogs = dogs
+sortedDogs.sort((a, b) => a.recommendedFood - b.recommendedFood)
+console.log(sortedDogs)
