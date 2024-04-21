@@ -315,3 +315,33 @@ console.log((2.7).toFixed(0));
 console.log((2.7).toFixed(4));
 console.log(+(2.7).toFixed(4));
  */
+
+// Check for even numbers
+/* console.log(6 % 2); // 0
+
+const isEven = n => n % 2 === 0;
+console.log(isEven(8));
+console.log(isEven(23));
+
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements_row')].forEach(function (row, i) {
+    if (i % 2 === 0) row.style.backgroundColor = 'orangered';
+    if (i % 3 === 0) row.style.backgroundColor = 'blue';
+  });
+}); */
+
+/*
+ const diameter = 287_460_000_000;
+const radius = diameter / 2;
+console.log(radius);
+ */
+
+/*
+// BigInt
+console.log(2 ** 53 - 1);
+console.log(2 ** 53 + 4);
+console.log(2 ** 53 + 4);
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(3523539535835623598252593503535n);
+console.log(BigInt(2 ** 533));
+ */
