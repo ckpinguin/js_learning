@@ -5,7 +5,7 @@
 // BANKIST APP
 
 /////////////////////////////////////////////////
-// Data
+// SECTION Data
 
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
@@ -16,17 +16,17 @@ const account1 = {
   pin: 1111,
 
   movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
+    '2023-11-18T21:31:17.178Z',
+    '2024-03-23T07:42:02.383Z',
     '2020-01-28T09:15:04.904Z',
     '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2024-04-18T14:11:59.604Z',
+    '2024-03-27T17:01:17.194Z',
+    '2024-04-22T23:36:17.929Z',
+    '2024-04-21T10:51:36.790Z',
   ],
   currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  locale: 'de-CH', // de-DE
 };
 
 const account2 = {
@@ -51,8 +51,9 @@ const account2 = {
 
 const accounts = [account1, account2];
 
+// !SECTION
 /////////////////////////////////////////////////
-// Elements
+// SECTION Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
@@ -77,24 +78,48 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
-
+// !SECTION
 /////////////////////////////////////////////////
-// Functions
+// SECTION Functions
 
-const displayMovements = function (movements, sort = false) {
+const formatMovementDate = function (date, locale) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.abs(date2 - date1) / (1000 * 60 * 60 * 24);
+
+  const daysPassed = Math.round(calcDaysPassed(new Date(), date));
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  if (daysPassed > 7) return new Intl.DateTimeFormat(locale).format(date);
+};
+
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
+const displayMovements = function (account, sort = false) {
   containerMovements.innerHTML = '';
+  const movements = account.movements;
+  const dates = account.movementsDates;
 
   const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const displayDate = formatMovementDate(new Date(dates[i]), account.locale);
+    const formattedMov = formatCur(mov, account.locale, account.currency);
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+    <div class="movements__date">${displayDate}</div>
+        <div class="movements__value">${formattedMov}</div>
       </div>
     `;
 
@@ -104,7 +129,8 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  const formattedBalance = formatCur(acc.balance, acc.locale, acc.currency);
+  labelBalance.textContent = formattedBalance;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -142,7 +168,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -151,9 +177,43 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+// !SECTION
 ///////////////////////////////////////
-// Event handlers
+// SECTION Event handlers
 let currentAccount;
+
+// SECTION FAKE ALWAYS LOGGED IN
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
+// !SECTION
+
+// SECTION Experimenting with API
+const now = new Date();
+const dateOpts = {
+  hour: 'numeric',
+  minute: 'numeric',
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+  // weekday: 'long',
+};
+labelDate.textContent = new Intl.DateTimeFormat(
+  currentAccount.locale,
+  dateOpts
+).format(now);
+
+// !SECTION
+
+// Format: day.month.year
+const day = `${now.getDate()}`.padStart(2, 0);
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const year = now.getFullYear();
+const hour = `${now.getHours()}`.padStart(2, 0);
+const minutes = `${now.getMinutes()}`.padStart(2, 0);
+
+// labelDate.textContent = `${day}.${month}.${year}, ${hour}:${minutes}`;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -198,6 +258,10 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    // Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -211,6 +275,9 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
+
+    // Add loan date
+    currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -244,13 +311,14 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
+// !SECTION
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-// LECTURES
+// SECTION LECTURES
 
 /* console.log(23 === 23.0);
 
@@ -345,3 +413,73 @@ console.log(Number.MAX_SAFE_INTEGER);
 console.log(3523539535835623598252593503535n);
 console.log(BigInt(2 ** 533));
  */
+
+// Dates & times
+/* const now = new Date();
+console.log(now);
+
+console.log(new Date('April 22 2024 18:05:41'));
+console.log(new Date('December 24, 2024'));
+console.log(new Date(account1.movementsDates[0]));
+console.log(new Date(2037, 10, 32, 15, 23, 5));
+
+console.log(new Date(0));
+console.log(new Date(3 * 24 * 60 * 60 * 1000));
+/*  
+
+/*
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(future);
+console.log(future.getFullYear());
+console.log(future.getMonth());
+console.log(future.getDate());
+console.log(future.getDay());
+console.log(future.getHours());
+console.log(future.getMinutes());
+console.log(future.getSeconds());
+console.log(future.toISOString());
+console.log(future.getTime());
+
+console.log(new Date(2142244980000));
+
+console.log(Date.now());
+
+future.setFullYear(2040);
+console.log(future);
+future.setMonth(3);
+console.log(future);
+ */
+
+// Operations with dates
+/* 
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(Number(future));
+console.log(+future);
+
+const calcDaysPassed = (date1, date2) =>
+  Math.abs(date2 - date1) / (1000 * 60 * 60 * 24);
+
+const days1 = calcDaysPassed(new Date(2037, 3, 14), new Date(2023, 9, 24));
+console.log(days1); 
+*/
+
+// Internationalizing numbers & dates (Intl)
+
+const num = 3884764.23;
+
+const options = {
+  style: 'currency', // unit, percent, currency
+  unit: 'celsius',
+  currency: 'CHF',
+  // useGrouping: false,
+};
+
+console.log('US: ', new Intl.NumberFormat('en-US').format(num));
+console.log('GB: ', new Intl.NumberFormat('en-GB').format(num));
+console.log('DE: ', new Intl.NumberFormat('de-DE').format(num));
+console.log('CH: ', new Intl.NumberFormat('de-CH').format(num));
+console.log('Syria: ', new Intl.NumberFormat('ar-SY').format(num));
+console.log(
+  navigator.language,
+  new Intl.NumberFormat(navigator.language, options).format(num)
+);
