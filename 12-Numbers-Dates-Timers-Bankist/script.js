@@ -178,43 +178,53 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogoutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    // In each call, print remaining time to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // When 0 seconds, logout user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+
+  let time = 100;
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
 // !SECTION
 ///////////////////////////////////////
 // SECTION Event handlers
-let currentAccount;
+let currentAccount, timer;
 
 // SECTION FAKE ALWAYS LOGGED IN
-currentAccount = account1;
+/* currentAccount = account1;
 updateUI(currentAccount);
-containerApp.style.opacity = 100;
+containerApp.style.opacity = 100; */
 
 // !SECTION
 
 // SECTION Experimenting with API
-const now = new Date();
-const dateOpts = {
-  hour: 'numeric',
-  minute: 'numeric',
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-  // weekday: 'long',
-};
-labelDate.textContent = new Intl.DateTimeFormat(
-  currentAccount.locale,
-  dateOpts
-).format(now);
+/* const now = new Date(); */
 
 // !SECTION
 
 // Format: day.month.year
-const day = `${now.getDate()}`.padStart(2, 0);
+const now = new Date();
+/* const day = `${now.getDate()}`.padStart(2, 0);
 const month = `${now.getMonth() + 1}`.padStart(2, 0);
 const year = now.getFullYear();
 const hour = `${now.getHours()}`.padStart(2, 0);
-const minutes = `${now.getMinutes()}`.padStart(2, 0);
-
-// labelDate.textContent = `${day}.${month}.${year}, ${hour}:${minutes}`;
+const minutes = `${now.getMinutes()}`.padStart(2, 0); */
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -235,6 +245,23 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+
+    const dateOpts = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      // weekday: 'long',
+    };
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      dateOpts
+    ).format(now);
+
+    // Clear already running timer & start logout timer
+    if (timer) clearInterval(timer);
+    timer = startLogoutTimer();
 
     // Update UI
     updateUI(currentAccount);
@@ -265,6 +292,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    // Reset and restart logout timer
+    clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
@@ -285,6 +316,9 @@ btnLoan.addEventListener('click', function (e) {
       updateUI(currentAccount);
     }, 2500);
     inputLoanAmount.value = '';
+    // Reset and restart logout timer
+    clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
