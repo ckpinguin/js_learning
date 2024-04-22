@@ -274,16 +274,18 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
 
-    // Add loan date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
+    inputLoanAmount.value = '';
   }
-  inputLoanAmount.value = '';
 });
 
 btnClose.addEventListener('click', function (e) {
@@ -466,7 +468,7 @@ console.log(days1);
 
 // Internationalizing numbers & dates (Intl)
 
-const num = 3884764.23;
+/* const num = 3884764.23;
 
 const options = {
   style: 'currency', // unit, percent, currency
@@ -484,3 +486,21 @@ console.log(
   navigator.language,
   new Intl.NumberFormat(navigator.language, options).format(num)
 );
+ */
+
+// const ingredients = ['olives', 'spinach'];
+const ingredients = ['mushrooms', 'olives'];
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => console.log(`Pizza with ${ing1} and ${ing2}`),
+  3000,
+  ...ingredients
+);
+
+console.log('Waiting...');
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+if (navigator.geolocation)
+  navigator.geolocation.getCurrentPosition(
+    position => console.log(position),
+    err => console.error(err)
+  );
