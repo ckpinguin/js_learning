@@ -487,7 +487,7 @@ console.log(
   new Intl.NumberFormat(navigator.language, options).format(num)
 );
  */
-
+/* 
 // const ingredients = ['olives', 'spinach'];
 const ingredients = ['mushrooms', 'olives'];
 const pizzaTimer = setTimeout(
@@ -504,3 +504,13 @@ if (navigator.geolocation)
     position => console.log(position),
     err => console.error(err)
   );
+
+// setInterval
+setInterval(function () {
+  const now = new Date();
+  const hour = `${now.getHours()}`.padStart(2, 0);
+  const minutes = `${now.getMinutes()}`.padStart(2, 0);
+  const seconds = `${now.getSeconds()}`.padStart(2, 0);
+  console.log(`${hour}:${minutes}:${seconds}`);
+}, 1000);
+ */
