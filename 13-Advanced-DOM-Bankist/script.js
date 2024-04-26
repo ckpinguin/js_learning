@@ -31,3 +31,128 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+///////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+
+// console.log(document.documentElement);
+
+// Nodelist is not live data
+/* const allSections = document.querySelectorAll('.section');
+console.log(allSections);
+document.getElementById('section--1');
+// HTMLCollection represents live DOM data
+const allBtns = document.getElementsByTagName('button');
+console.log(allBtns);
+console.log(document.getElementsByClassName('btn'));
+*/
+// Create and insert elements
+// .insertAdjacentHTML
+const message = document.createElement('div');
+message.classList.add('cookie-message');
+//message.textContent =
+//  'We use cookies for improved functionality and analytics.';
+message.innerHTML = `We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>`;
+
+const header = document.querySelector('.header');
+//header.prepend(message);
+header.append(message);
+// If you want to insert multiple times you have
+// to clone the element
+// header.append(message.cloneNode(true));
+//header.before(message);
+//header.after(message);
+
+// Delete elements
+document
+  .querySelector('.btn--close-cookie')
+  .addEventListener('click', function () {
+    message.remove();
+    // The old way of removing elements:
+    // message.parentElement.removeChild(message);
+  });
+/* 
+// Styles
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+//console.log(message.style.color);
+console.log(message.style.backgroundColor);
+console.log(getComputedStyle(message).color);
+console.log(getComputedStyle(message).height);
+
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+
+// With custom properties like CSS variables, you use setProperty
+//document.documentElement.style.setProperty('--color-primary', 'orangered');
+
+// Attributes
+const logo = document.querySelector('.nav__logo');
+console.log(logo.alt);
+console.log(logo.src);
+console.log(logo.className);
+
+logo.alt = 'Beautiful minimalist logo';
+// Non-standard
+console.log(logo.designer);
+console.log(logo.getAttribute('designer'));
+logo.setAttribute('company', 'Bankist');
+
+const link = document.querySelector('.twitter-link');
+console.log(link.href);
+console.log(link.getAttribute('href'));
+
+// Data attributes
+// needs camelCase for the attr. names!
+console.log(logo.dataset.versionNumber);
+
+// Classes
+logo.classList.add('c');
+logo.classList.remove('j');
+logo.classList.toggle('c');
+logo.classList.contains('c');
+
+// Don't use this, it will overwrite all classes
+logo.className = 'chris';
+ */
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coords = section1.getBoundingClientRect();
+
+  console.log(s1coords);
+
+  console.log(e.target.getBoundingClientRect());
+
+  console.log('Current scroll (X/Y)', window.scrollX, window.scrollY);
+
+  console.log(
+    'height/width viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  // Scrolling
+  /*   window.scrollTo(
+    s1coords.left + window.scrollX,
+    s1coords.top + window.scrollY
+  ); // scrollY needs to be added */
+  /* 
+  window.scrollTo({
+    left: s1coords.left + window.scrollX,
+    top: s1coords.top + window.scrollY,
+    behavior: 'smooth',
+  }); */
+  // Better:
+  /*   window.scrollBy({
+    left: s1coords.left,
+    top: s1coords.top,
+    behavior: 'smooth',
+  }); */
+
+  // Modern way of scrolling (OK for modern browsers)
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
