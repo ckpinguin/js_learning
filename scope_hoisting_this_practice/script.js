@@ -10,7 +10,7 @@ function calcAge(year) {
 
     if (year >= 1975 && year <= 1996) {
       var millenial = false // var is function-scoped
-      const firstName = "Joe" // overwrites higher scoped variable
+      const firstName = "Joe" // block-scoped, overwrites higher scoped variable
       const str = `Not old and not young you are, ${firstName}`
       console.log(str)
 
@@ -18,7 +18,7 @@ function calcAge(year) {
         return a + b
       }
       // Creating new variable with same name as outer scopes
-      // variable is valid code
+      // variable is valid code (but not recommended of course)
       const output = "NEW OUTPUT"
     }
     //console.log(str)
@@ -35,7 +35,7 @@ const firstName = "Test"
 console.log(calcAge(1979))
 
 // Hoisting practice:
-console.log(me) // Hoisted, so OK
+console.log(me) // „var me“ is hoisted, so OK
 // console.log(job) // Nope, still in TDZ
 // console.log(year) // Nope, still in TDZ
 var me = "Chris"
@@ -152,3 +152,35 @@ function f() {
   let xyz = 2
 }
 f()
+
+// Repetition of call stack, scope chain, and this keyword
+const name2 = "Jim"
+
+const first = () => {
+  let a = 1
+  console.log("this in first (arrow func)", this)
+  const b = second(7, 9)
+  a = a + b
+  return a
+}
+
+// functions are block scoped in strict mode
+function second(x, y) {
+  console.log("this in second (standard func)", this)
+  var c = 2
+  console.log(name2) // access to global scope ok
+  if (name2 === "Jim") {
+    const d = 3 // block scoped
+    let e = 4 // block scoped
+    var f = 5 // function scoped (deprecated)
+  }
+  console.log(d) // Reference error, block scoped d is not accessible in function scope
+  console.log(e) // Reference error, block scoped e is not accessible in function scope
+  console.log(f) // ok to reference
+  return c
+}
+// console.log(c) // Reference error, c is not accessible in global scope
+
+const xx = first()
+console.log(xx)
+console.log("this in global scope", this)
