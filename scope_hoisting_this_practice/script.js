@@ -21,10 +21,11 @@ function calcAge(year) {
       // variable is valid code (but not recommended of course)
       const output = "NEW OUTPUT"
     }
-    //console.log(str)
-    //add(4, 5)
-    console.log(millenial)
-    console.log(output)
+    //console.log(str) // no access to block-scoped variable
+    //add(4, 5) // no access to block-scoped function (in strict mode)
+    console.log(millenial) // defined by var, so accessible outside of the block
+    console.log(output) // „output“ of the block is block-scoped (const defined),
+    //so not accessible here, but output of the function is accessible (lookup chain)
   }
   printAge()
 
