@@ -174,8 +174,8 @@ function second(x, y) {
     let e = 4 // block scoped
     var f = 5 // function scoped (deprecated)
   }
-  console.log(d) // Reference error, block scoped d is not accessible in function scope
-  console.log(e) // Reference error, block scoped e is not accessible in function scope
+  //console.log(d) // Reference error, block scoped d is not acce    ssible in function scope
+  //console.log(e) // Reference error, block scoped e is not accessible in function scope
   console.log(f) // ok to reference
   return c
 }
