@@ -48,14 +48,14 @@ const jim2 = {
   age: 37,
   hobbies: ["swimming", "reading", "talking"],
 }
-// Real (shallow) copy of an object
+// Real (shallow) copy of an object (only way to change an address of a const object)
 const jimCopy = Object.assign({}, jim2)
 jimCopy.lastName = "Batman"
 jimCopy.hobbies.push("Learning")
 console.log("Before: ", jim2)
 console.log("After: ", jimCopy)
 
-// New way to deep clone an object
+// New way to deep clone an object!
 const jimDeepCopy = structuredClone(jim2)
 jimDeepCopy.hobbies.push("Doing")
 console.log("Before: ", jim2)
