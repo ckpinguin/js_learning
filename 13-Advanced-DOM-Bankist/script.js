@@ -125,6 +125,33 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+  // Guard clause (return early)
+  if (!clicked) return;
+  // Clear active class for all tabs first
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  // Same goes for already showed content
+  tabsContent.forEach(content =>
+    content.classList.remove('operations__content--active')
+  );
+
+  // Then add it to the clicked one
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content area
+  // dataset is set with data-tab="1" in HTML to easily identify and
+  // access the tab content
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
 ///////////////////////////////////////
 //////////////////////////////////////
 //////////////////////////////////////
