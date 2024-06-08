@@ -3,10 +3,18 @@
 ///////////////////////////////////////
 // Modal window
 
+// It is best practice to have all used/selected elements
+// at the top of the script
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const nav = document.querySelector('.nav');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -31,9 +39,6 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
 
 // Cookie message
 // Create and insert elements
@@ -126,11 +131,7 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 });
 
 // Tabbed component
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
-
-tabsContainer.addEventListener('click', function (e) {
+tabsContainer.addEventListener('mouseover', function (e) {
   const clicked = e.target.closest('.operations__tab');
   // Guard clause (return early)
   if (!clicked) return;
@@ -151,6 +152,27 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// Menu fade animation
+// Also with event delegation
+// Remember: mouseenter/mouseleave do NOT bubble, so we have to use mouseover/mouseout
+
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    // Select the siblings of the hovered link
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
 
 ///////////////////////////////////////
 //////////////////////////////////////
