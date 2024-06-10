@@ -265,6 +265,49 @@ const imgObserver = new IntersectionObserver(loadImg, {
 
 imgTargets.forEach(img => imgObserver.observe(img));
 
+// Slider
+const slides = document.querySelectorAll('.slide');
+
+/* const slider = document.querySelector('.slider');
+slider.style.transform = 'scale(0.4) translateX(-800px)';
+slider.style.overflow = 'visible'; */
+
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+
+let currentSlide = 0;
+
+slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+// 0%, 100%, 200%, 300%
+
+function goToSlide(slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+  );
+}
+goToSlide(0); // Start at slide 0
+
+// Next slide
+const nextSlide = function () {
+  if (currentSlide === slides.length - 1) {
+    currentSlide = 0;
+  } else {
+    currentSlide++;
+  }
+  goToSlide(currentSlide);
+};
+
+const prevSlide = function () {
+  currentSlide--;
+  if (currentSlide < 0) currentSlide = slides.length - 1;
+  goToSlide(currentSlide);
+};
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
+// currentSlide = 1: -100%, 0%, 100%, 200%
+// currentSlide = 2: -200%, -100%, 0%, 100%
+// etc.
+
 ///////////////////////////////////////
 //////////////////////////////////////
 //////////////////////////////////////
