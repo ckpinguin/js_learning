@@ -23,6 +23,9 @@ const matilda = new Person("Matilda", 2017)
 const jack = new Person("Jack", 1975)
 console.log(matilda, jack)
 
+const jim = Object.create(Person.prototype)
+console.log("jim:", jim)
+
 console.log(jeff instanceof Person)
 console.log(jeff instanceof Object)
 console.log(jeff.__proto__ === Person.prototype)
