@@ -40,7 +40,6 @@ console.log(Person.prototype)
 
 jeff.calcAge()
 
-console.log(jeff.__proto__)
 console.log(Person.prototype)
 console.log(jeff.__proto__ === Person.prototype)
 console.log(Person.__proto__)
@@ -53,3 +52,23 @@ Person.prototype.country = "Switzerland"
 console.log(jeff.country)
 console.log(jeff.hasOwnProperty("country"))
 console.log(jeff.hasOwnProperty("firstName"))
+
+console.log(jeff.__proto__)
+console.log(jeff.__proto__.__proto__)
+console.log(jeff.__proto__.__proto__.__proto__)
+
+console.dir(Person.prototype.constructor)
+const arr = [1, 2, 3, 4, 5, 6, 7, 7, 8]
+console.log(arr.__proto__)
+console.log(arr.__proto__ === Array.prototype)
+
+console.log(arr.__proto__.__proto__)
+Array.prototype.unique = function () {
+  return [...new Set(this)]
+}
+console.log(arr.unique())
+
+const h1 = document.querySelector("h1")
+console.dir(h1)
+
+console.dir((x) => x + 1)
