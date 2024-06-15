@@ -143,3 +143,83 @@ console.log(jessica.__proto__ === PersonCl.prototype)
 // 1. Classes are NOT hoisted
 // 2. Classes are first-class citizens
 // 3. Classes are implicitly executed in strict mode
+
+// Getters and setters for normal objects:
+const account = {
+  owner: "Jeff",
+  movements: [200, 530, 120, 300],
+
+  get latest() {
+    return this.movements.slice(-1).pop()
+  },
+
+  set latest(mov) {
+    this.movements.push(mov)
+  },
+}
+
+console.log(account.latest)
+account.latest = 50
+console.log(account.movements)
+console.log(account)
+
+// Using Object.create() the preferred way
+// of creating objects
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear)
+  },
+  init(firstName, birthYear) {
+    this.firstName = firstName
+    this.birthYear = birthYear
+  },
+}
+
+const steven = Object.create(PersonProto)
+console.log(steven)
+steven.name = "Steven"
+steven.birthYear = 2002
+steven.calcAge()
+
+console.log(steven.__proto__)
+console.log(steven.__proto__ === PersonProto)
+
+const john = Object.create(PersonProto)
+john.init("John", 1979)
+john.calcAge()
+
+///////////////////////////////////////
+// Coding Challenge #2
+
+/* 
+1. Re-create challenge 1, but this time using an ES6 class;
+2. Add a getter called 'speedUS' which returns the current speed in mi/h (divide by 1.6);
+3. Add a setter called 'speedUS' which sets the current speed in mi/h (but converts it to km/h before storing the value, by multiplying the input by 1.6);
+4. Create a new car and experiment with the accelerate and brake methods, and with the getter and setter.
+
+DATA CAR 1: 'Ford' going at 120 km/h
+
+GOOD LUCK 😀
+*/
+
+const CarProto = {
+  init(make, speed) {
+    this.make = make
+    this.speed = speed
+  },
+  get speedUS() {
+    return this.speed / 1.6
+  },
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6
+  },
+}
+
+const ford = Object.create(CarProto)
+ford.init("Ford", 120)
+console.log(ford)
+console.log(ford.speedUS)
+ford.speedUS = 140
+console.log(ford.speedUS)
+console.log(ford.speed)
