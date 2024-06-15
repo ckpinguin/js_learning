@@ -1,5 +1,6 @@
 "use strict"
 
+/*
 const Person = function (firstName, birthYear) {
   // Instance properties
   this.firstName = firstName
@@ -9,8 +10,8 @@ const Person = function (firstName, birthYear) {
   /*   this.calcAge = function () {
     console.log(2037 - this.birthYear)
   } */
-}
 
+/*
 const jeff = new Person("Jeff", 1990)
 console.log(jeff)
 
@@ -32,10 +33,13 @@ console.log(jeff.__proto__ === Person.prototype)
 
 console.log(Object.__proto__)
 console.log(Object.prototype)
+*/
 
 // Prototypes
 // Adding a „method“ to the prototype
 // this is set to the calling object
+/*
+
 Person.prototype.calcAge = function () {
   console.log(2037 - this.birthYear)
 }
@@ -61,6 +65,7 @@ console.log(jeff.__proto__.__proto__)
 console.log(jeff.__proto__.__proto__.__proto__)
 
 console.dir(Person.prototype.constructor)
+*/
 const arr = [1, 2, 3, 4, 5, 6, 7, 7, 8]
 console.log(arr.__proto__)
 console.log(arr.__proto__ === Array.prototype)
@@ -207,6 +212,17 @@ const CarProto = {
     this.make = make
     this.speed = speed
   },
+
+  accelerate() {
+    this.speed += 10
+    console.log(`${this.make} is going at ${this.speed} km/h`)
+  },
+
+  brake() {
+    this.speed -= 10
+    console.log(`${this.make} is going at ${this.speed} km/h`)
+  },
+
   get speedUS() {
     return this.speed / 1.6
   },
@@ -223,3 +239,96 @@ console.log(ford.speedUS)
 ford.speedUS = 140
 console.log(ford.speedUS)
 console.log(ford.speed)
+ford.accelerate()
+ford.brake()
+
+//////////////////////////////////////
+// Inheritance between „classes“: constructor functions
+
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName
+  this.birthYear = birthYear
+}
+
+Person.prototype.calcAge = function () {
+  console.log(2037 - this.birthYear)
+}
+
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear)
+  this.course = course
+}
+
+// Make __proto__ point to Person.prototype (aka inheritance)
+// This has to be done before any more methods are added
+Student.prototype = Object.create(Person.prototype)
+// This would be wrong:
+// Student.prototype = Person.prototype
+
+Student.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`)
+}
+
+const mike = new Student("Mike", 2020, "Computer Science")
+mike.introduce()
+mike.calcAge()
+
+console.log(mike.__proto__)
+console.log(mike.__proto__.__proto__)
+
+console.log(mike instanceof Student)
+console.log(mike instanceof Person)
+console.log(mike instanceof Object)
+
+///////////////////////////////////////
+// Coding Challenge #3
+
+/* 
+1. Use a constructor function to implement an Electric Car (called EV) as a CHILD "class" of Car. Besides a make and current speed, the EV also has the current battery charge in % ('charge' property);
+2. Implement a 'chargeBattery' method which takes an argument 'chargeTo' and sets the battery charge to 'chargeTo';
+3. Implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140 km/h, with a charge of 22%';
+4. Create an electric car object and experiment with calling 'accelerate', 'brake' and 'chargeBattery' (charge to 90%). Notice what happens when you 'accelerate'! HINT: Review the definiton of polymorphism 😉
+
+DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
+
+const EV = function (make, speed, chargePerc) {
+  Car.call(this, make, speed)
+  this.chargePerc = chargePerc
+}
+
+EV.prototype = Object.create(Car.prototype)
+
+EV.prototype.chargeBattery = function (chargeTo) {
+  this.charge_perc = chargeTo
+}
+
+EV.prototype.accelerate = function () {
+  this.speed += 20
+  this.chargePerc -= 1
+  console.log(
+    `${this.make} is going at ${this.speed} with a charge of ${this.chargePerc}`
+  )
+}
+
+const tesla = new EV("Tesla", 120, 23)
+console.log(tesla)
+tesla.accelerate()
+tesla.chargeBattery(99)
+tesla.accelerate()
+tesla.brake()
+
+///////////////////////////////////////
+// Coding Challenge #4
+
+/* 
+1. Re-create challenge #3, but this time using ES6 classes: create an 'EVCl' child class of the 'CarCl' class
+2. Make the 'charge' property private;
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery' methods of this class, and also update the 'brake' method in the 'CarCl' class. They experiment with chining!
+
+DATA CAR 1: 'Rivian' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
