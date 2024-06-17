@@ -2,7 +2,7 @@
   "name": "13-advanced-dom-bankist",
   "version": "1.0.0",
   "description": "",
-  "main": "build/main.js",
+  "browserslist": "last 2 versions, > 0.5% and ie >= 11",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "rm -rf .parcel-cache && parcel index.html",
@@ -12,5 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "parcel": "^2.12.0"
+  },
+  "dependencies": {
+    "core-js": "^3.37.1"
   }
 }
