@@ -1,5 +1,7 @@
 'use strict';
 
+import { testfun } from './testfun.js';
+
 ///////////////////////////////////////
 // Modal window
 
@@ -27,6 +29,7 @@ const closeModal = function () {
   overlay.classList.add('hidden');
 };
 
+testfun();
 /* for (let i = 0; i < btnsOpenModal.length; i++)
   btnsOpenModal[i].addEventListener('click', openModal); */
 btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
