@@ -65,6 +65,7 @@ const renderCountry = function (data, className = '') {
   countriesContainer.insertAdjacentHTML('beforeend', html);
   countriesContainer.style.opacity = 1;
 };
+/*
 const getCountryAndNeighbour = function (country) {
   // AJAX call country 1
   const request = new XMLHttpRequest();
@@ -92,4 +93,26 @@ const getCountryAndNeighbour = function (country) {
   });
 };
 
-getCountryAndNeighbour('switzerland');
+getCountryAndNeighbour('switzerland'); */
+
+/* const request = fetch(`${countriesApi}name/switzerland`);
+console.log(request);
+ */
+const getCountryData = function (country) {
+  // Country 1
+  fetch(`${countriesApi}name/${country}`)
+    .then(response => response.json())
+    .then(data => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders?.[0];
+
+      if (!neighbour) return; // guard clause
+
+      // Country 2
+      return fetch(`${countriesApi}alpha/${neighbour}`);
+    })
+    .then(response => response.json())
+    .then(data => renderCountry(data[0], 'neighbour'));
+};
+getCountryData('switzerland');
+getCountryData('usa');
