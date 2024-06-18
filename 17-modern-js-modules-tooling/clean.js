@@ -69,6 +69,7 @@ const checkExpenses = (state, limits) =>
 const finalBudget = checkExpenses(budget, spendingLimits);
 console.log(finalBudget);
 
+// still impure (side-effect: console.log)
 const logBigExpenses = function (state, bigLimit) {
   const bigExpenses = state
     .filter(entry => entry.value <= -bigLimit)
