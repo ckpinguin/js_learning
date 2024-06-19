@@ -196,3 +196,15 @@ btn.addEventListener('click', function () {
   //whereAmI(19.037, 72.873);
   whereAmI(-33.933, 18.474);
 });
+
+console.log('Test start');
+setTimeout(() => console.log('0 sec timer'), 0); // normal callback queue
+Promise.resolve('Resolved promise 1') // immediate success
+  .then(res => console.log(res)); // Microtasks queue (priority!)
+
+Promise.resolve('Resolved promise 2').then(res => {
+  for (let i = 0; i < 10000000000; i++) {}
+  console.log(res);
+});
+
+console.log('Test end');
