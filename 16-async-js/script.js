@@ -180,13 +180,20 @@ const whereAmI = function (lat, lng) {
       return response.json();
     })
     .then(data => {
-      console.log(`You are in ${data?.city}, ${data?.countryName}`);
+      console.log(`You are in ${data.city}, ${data.countryName}`);
       console.log(data);
-      getCountryData(data.countryName);
-    });
+      return fetch(`${countriesApi}name/${data.countryName}`);
+    })
+    .then(res => {
+      if (!res.ok) throw new Error(`Country not found (${res.status})`);
+      return res.json();
+    })
+    .then(data => renderCountry(data[0]))
+    .catch(err => console.log(`${err.message} 💥`))
+    .finally((countriesContainer.style.opacity = 1));
 };
 
-whereAmI();
+//whereAmI();
 //whereAmI(52.508, 13.381);
 //whereAmI(19.037, 72.873);
-//whereAmI(-33.933, 18.474);
+whereAmI(-33.933, 18.474);
