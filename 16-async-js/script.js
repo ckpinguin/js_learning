@@ -428,3 +428,61 @@ TEST DATA: ['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']. To test, turn of
 
 GOOD LUCK 😀
 */
+
+const createImage = function (imgPath) {
+  return new Promise((resolve, reject) => {
+    const imageContainer = document.querySelector('.images');
+    const img = document.createElement('img');
+    img.src = imgPath; // implicitly async
+
+    // img.addEventListener() would be an alternative here
+    img.onload = () => {
+      imageContainer.appendChild(img);
+      resolve(img);
+    };
+    img.onerror = () => {
+      reject(new Error(`Failed to load image at ${imgPath}`));
+    };
+  });
+};
+
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+const loadNPause = async function () {
+  try {
+    let img = await createImage('img/img-1.jpg');
+    console.log(img);
+    await wait(2);
+    img.style.display = 'none';
+    img = await createImage('img/img-2.jpg');
+    img.style.display = 'block';
+    console.log(img);
+    await wait(2);
+    img.style.display = 'none';
+  } catch (err) {
+    console.error(err);
+  }
+};
+(async function () {
+  await loadNPause();
+})();
+
+const loadAll = async function (imgArr) {
+  try {
+    const imgs = imgArr.map(async imgPath => await createImage(imgPath));
+    console.log(imgs);
+    const imgsEl = await Promise.all(imgs);
+    console.log(imgsEl);
+    imgsEl.forEach(img => img.classList.add('parallel'));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+(async function () {
+  await loadAll(['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']);
+})();
