@@ -134,11 +134,6 @@ const getCountryData = function (country) {
     });
 };
 
-btn.addEventListener('click', function () {
-  //getCountryData('switzerland');
-  //getCountryData('australia');
-});
-
 ///////////////////////////////////////
 // Coding Challenge #1
 
@@ -193,7 +188,11 @@ const whereAmI = function (lat, lng) {
     .finally((countriesContainer.style.opacity = 1));
 };
 
-//whereAmI();
-//whereAmI(52.508, 13.381);
-//whereAmI(19.037, 72.873);
-whereAmI(-33.933, 18.474);
+btn.addEventListener('click', function () {
+  //getCountryData('switzerland');
+  //getCountryData('australia');
+  //whereAmI();
+  //whereAmI(52.508, 13.381);
+  //whereAmI(19.037, 72.873);
+  whereAmI(-33.933, 18.474);
+});
