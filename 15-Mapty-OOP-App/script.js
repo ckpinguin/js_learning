@@ -12,6 +12,7 @@ class Workout {
   // class vars
   date = new Date();
   id = Date.now();
+  clicks = 0;
 
   constructor(coords, distance, duration) {
     this.coords = coords; // [lat, lng]
@@ -26,6 +27,10 @@ class Workout {
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
       months[this.date.getMonth()]
     } ${this.date.getDate()}`;
+  }
+
+  click() {
+    this.clicks++;
   }
 }
 
@@ -64,11 +69,13 @@ class App {
   #map;
   #mapEvent;
   #workouts = [];
+  #zoomLevel = 13;
 
   constructor() {
     this._getPosition();
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
   }
 
   _getPosition() {
@@ -87,7 +94,7 @@ class App {
     const { latitude, longitude } = position.coords;
     const coords = [latitude, longitude];
 
-    this.#map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map').setView(coords, this.#zoomLevel);
     // for satellite images:
     //https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png
 
@@ -229,6 +236,25 @@ class App {
     </li>`;
 
     form.insertAdjacentHTML('afterend', html);
+  }
+
+  _moveToPopup(e) {
+    const workoutEl = e.target.closest('.workout');
+
+    if (!workoutEl) return; // guard clause
+
+    const workout = this.#workouts.find(w => w.id === +workoutEl.dataset.id);
+
+    this.#map.setView(workout.coords, this.#zoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+
+    // Examp le of usage of public interface of a class
+    workout.click();
+    console.log(workout.clicks);
   }
 }
 
