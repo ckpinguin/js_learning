@@ -73,6 +73,11 @@ class App {
 
   constructor() {
     this._getPosition();
+
+    // Get data from local storage
+    this._getLocalStorage();
+
+    // Event handlers
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -105,6 +110,9 @@ class App {
 
     // Handling clicks on map
     this.#map.on('click', this._showForm.bind(this));
+
+    // This only works, if the map is loaded (see above!)
+    this.#workouts.forEach(w => this._renderWorkoutMarker(w));
   }
 
   _showForm(e) {
@@ -170,6 +178,8 @@ class App {
     this._renderWorkout(workout);
 
     this._hideForm();
+
+    this._setLocalStorage();
   }
 
   _renderWorkoutMarker(workout) {
@@ -253,8 +263,27 @@ class App {
     });
 
     // Examp le of usage of public interface of a class
-    workout.click();
-    console.log(workout.clicks);
+    // workout.click(); // Gets lost in local storage!
+  }
+
+  _setLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    // These will be just Objects, that means we lose
+    // the prototype-chain! We could loop over the data
+    // and create the objects anew (not worth the effort here)
+    const data = JSON.parse(localStorage.getItem('workouts'));
+    if (!data) return;
+
+    this.#workouts = data;
+    this.#workouts.forEach(w => this._renderWorkout(w));
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }
 
