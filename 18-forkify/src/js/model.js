@@ -6,7 +6,7 @@ export const state = {
   recipe: {},
 };
 
-export const loadRecipe = async function (id) {
+export async function loadRecipe(id) {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
     //const res = await fetch(`${API_URL}/${id}`);
@@ -32,4 +32,4 @@ export const loadRecipe = async function (id) {
     // Temp error handling
     console.error(`${err} 💥💥💥`);
   }
-};
+}
