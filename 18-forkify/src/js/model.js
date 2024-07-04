@@ -31,5 +31,8 @@ export async function loadRecipe(id) {
   } catch (err) {
     // Temp error handling
     console.error(`${err} 💥💥💥`);
+    // Necessary to reject promise in the controller code
+    // and have access to the error object
+    throw err;
   }
 }
