@@ -2,10 +2,7 @@ import 'core-js/stable'; // Polyfill ES6
 import 'regenerator-runtime/runtime'; //Polyfill async/await
 import * as model from './model';
 import recipeView from './views/recipeView';
-
-// https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
+import searchView from './views/searchView';
 
 async function controlRecipes() {
   try {
@@ -26,7 +23,20 @@ async function controlRecipes() {
   }
 }
 
+async function controlSearchResults() {
+  try {
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    await model.loadSearchResults(query);
+    console.log(model.state.search);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 (function init() {
-  // Subscribe
+  // Subscribes
+  searchView.addHandlerSearch(controlSearchResults);
   recipeView.addHandlerRender(controlRecipes);
 })();

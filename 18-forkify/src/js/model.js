@@ -4,6 +4,10 @@ import { getJSON } from './helpers';
 
 export const state = {
   recipe: {},
+  search: {
+    query: '',
+    results: [],
+  },
 };
 
 export async function loadRecipe(id) {
@@ -33,6 +37,24 @@ export async function loadRecipe(id) {
     console.error(`${err} 💥💥💥`);
     // Necessary to reject promise in the controller code
     // and have access to the error object
+    throw err;
+  }
+}
+
+export async function loadSearchResults(query) {
+  try {
+    const data = await getJSON(`${API_URL}?search=${query}`);
+    state.search.query = query;
+    state.search.results = data.data.recipes.map(recipe => {
+      return {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        image: recipe.image_url,
+      };
+    });
+  } catch (err) {
+    console.error(`${err}💥💥💥 `);
     throw err;
   }
 }
