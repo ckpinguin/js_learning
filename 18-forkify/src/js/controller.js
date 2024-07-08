@@ -4,6 +4,7 @@ import * as model from './model';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
+import paginationView from './views/paginationView';
 
 async function controlRecipes() {
   try {
@@ -34,14 +35,20 @@ async function controlSearchResults() {
     await model.loadSearchResults(query);
 
     //resultsView.render(model.state.search.results);
-    resultsView.render(model.getSearchResultsPage(1));
+    resultsView.render(model.getSearchResultsPage(4));
+    paginationView.render(model.state.search);
   } catch (err) {
     console.error(err);
   }
+}
+
+function controlPagination() {
+  console.log('pagination controller');
 }
 
 (function init() {
   // Subscribes
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 })();
