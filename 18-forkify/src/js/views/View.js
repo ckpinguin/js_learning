@@ -12,6 +12,10 @@ export default class View {
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
+  _clear() {
+    this._parentEl.innerHTML = '';
+  }
+
   renderSpinner() {
     const markup = `
           <div class="spinner">
@@ -52,9 +56,5 @@ export default class View {
     `;
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  _clear() {
-    this._parentEl.innerHTML = '';
   }
 }
