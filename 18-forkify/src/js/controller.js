@@ -35,15 +35,16 @@ async function controlSearchResults() {
     await model.loadSearchResults(query);
 
     //resultsView.render(model.state.search.results);
-    resultsView.render(model.getSearchResultsPage(4));
+    resultsView.render(model.getSearchResultsPage(3));
     paginationView.render(model.state.search);
   } catch (err) {
     console.error(err);
   }
 }
 
-function controlPagination() {
-  console.log('pagination controller');
+function controlPagination(goToPage) {
+  resultsView.render(model.getSearchResultsPage(goToPage));
+  paginationView.render(model.state.search);
 }
 
 (function init() {
