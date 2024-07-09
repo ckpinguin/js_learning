@@ -34,7 +34,6 @@ async function controlSearchResults() {
 
     await model.loadSearchResults(query);
 
-    //resultsView.render(model.state.search.results);
     resultsView.render(model.getSearchResultsPage(1));
     paginationView.render(model.state.search);
   } catch (err) {
@@ -47,9 +46,17 @@ function controlPagination(goToPage) {
   paginationView.render(model.state.search);
 }
 
+function controlServings(newServings) {
+  if (newServings < 1) return;
+  model.updateServings(newServings);
+
+  recipeView.render(model.state.recipe);
+}
+
 (function init() {
   // Subscribes
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  recipeView.addHandlerUpdateServings(controlServings);
 })();
