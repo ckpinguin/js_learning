@@ -1,5 +1,3 @@
-import 'core-js/stable'; // Polyfill ES6
-import 'regenerator-runtime/runtime'; //Polyfill async/await
 import * as model from './model';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
@@ -7,24 +5,31 @@ import resultsView from './views/resultsView';
 import paginationView from './views/paginationView';
 import bookmarksView from './views/bookmarksView';
 
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+import { async } from 'regenerator-runtime';
+
 async function controlRecipes() {
   try {
     const id = window.location.hash.slice(1);
 
-    if (!id) return; // guard (modern style)
-
+    if (!id) return;
     recipeView.renderSpinner();
 
-    // 0. Update results view to mark selected search result
+    // 0) Update results view to mark selected search result
     resultsView.update(model.getSearchResultsPage());
 
-    // 1. Loading recipe
+    // 1) Updating bookmarks view
+    bookmarksView.render(model.state.bookmarks);
+
+    // 2) Loading recipe
     await model.loadRecipe(id);
 
-    // 2. rendering recipe
+    // 3) Rendering recipe
     recipeView.render(model.state.recipe);
   } catch (err) {
     recipeView.renderError();
+    console.error(err);
   }
 }
 
