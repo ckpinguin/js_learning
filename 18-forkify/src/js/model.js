@@ -104,3 +104,7 @@ export function deleteBoomkark(id) {
   const storage = localStorage.getItem('bookmarks');
   if (storage) state.bookmarks = JSON.parse(storage);
 })();
+
+function clearBookmarks() {
+  localStorage.clear('bookmarks');
+}
