@@ -31,12 +31,7 @@ function createRecipeObject(data) {
 
 export async function loadRecipe(id) {
   try {
-    const data = await AJAX(`${API_URL}/${id}`);
-    //const res = await fetch(`${API_URL}/${id}`);
-    //const data = await res.json();
-
-    //if (!res.ok) throw new Error(`${data.message} (HTTP ${res.status})`);
-
+    const data = await AJAX(`${API_URL}/${id}?key=${API_KEY}`);
     //console.log(res, data);
     state.recipe = createRecipeObject(data);
     if (state.bookmarks.some(bookmark => bookmark.id === id))
@@ -54,7 +49,7 @@ export async function loadRecipe(id) {
 
 export async function loadSearchResults(query) {
   try {
-    const data = await AJAX(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${API_KEY}`);
     state.search.query = query;
     state.search.results = data.data.recipes.map(recipe => {
       return {
@@ -62,6 +57,7 @@ export async function loadSearchResults(query) {
         title: recipe.title,
         publisher: recipe.publisher,
         image: recipe.image_url,
+        ...(recipe.key && { key: recipe.key }),
       };
     });
   } catch (err) {
